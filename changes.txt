@@ -1,0 +1,9 @@
+** à6 : 
+- ajouté librariries directement dans le dossier code pour eviter installation dans Documents/procesing/libraries/
+- rétabli les raccourcis claviers.
+
+** v05 : 
+- uses jar for objects, goal is to keep as little in Processing, only the scenario-creative part.
+
+** v02 :
+- first working prototype with audio reactive legged creatures.
