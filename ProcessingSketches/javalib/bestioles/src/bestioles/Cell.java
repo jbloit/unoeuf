@@ -327,7 +327,6 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
     }
     parent.endShape(parent.CLOSE);
     
-    
     for (int k = 0; k < 4; k++){
       nodes[0].mult(live);
       parent.fill(bodyPalette[k],200);
@@ -339,7 +338,5 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
       }
       parent.endShape(parent.CLOSE);
     }
-
  } 
- 
 }
