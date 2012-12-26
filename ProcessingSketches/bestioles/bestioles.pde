@@ -3,9 +3,9 @@
 *
 * Graphic animation components are defined in a separate java library "bestioles.jar".
 * The show is arganized as a sequence of scene objects, that can be displayed at the same time.
-* A scene object instantiates graphic components and exposes an OSC interface to put these objects in motion.
+* A scene object instantiates graphic components and exposes an OSC interface to set these objects in motion.
 * Each scene object has a draw property to define if it is active at a certain time in the show.
-* The OSC messages are tipically sent by a companion Max/MSP patch, that triggers motions depending on an audio analysis layer.
+* The OSC messages are typically sent by a companion Max/MSP patch, that triggers motions depending on an audio analysis layer.
 * 
 * julien@jbloit.com, 2012.
 **/
@@ -27,9 +27,11 @@ int port_r = 12000;
 Globals globals;
 
 Scene1 scene1;
+Scene2 scene2;
 
 void setup() {
-  size(600, 600);
+  size(800, 600);
+  background(0);
   frameRate(30); 
   smooth();
 
@@ -38,14 +40,17 @@ void setup() {
   globals = new Globals(this);
   globals.makePalettes(sketchPath("data/palettes"));
   globals.loadCellPresets();
-  // gui = new ControlP5(this);
+  // gui = new gui(this);
   scene1 = new Scene1(this);
+  scene2 = new Scene2(this);
   //guiSetup();
 }
 
 void draw() {
   background(0);
+  scene2.draw();
   scene1.draw();
+
 }
 
 // parse incoming osc
@@ -82,6 +87,14 @@ void keyPressed() {
     if (key == 'k'){
       scene1.clear();
     }
+    
+      // add an object
+  if (key == 'o') {
+     Obj obj = new Obj(width, random(1, height), random(50, 100), round(random(1, 2)));
+     scene2.objs.add(obj);
+    redraw();
+  }
+    
   //  
   //  // numeric keys to recall creature presets (only 3 at the moment)
   //  newPresetCell(key - 49);
