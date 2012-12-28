@@ -48,8 +48,9 @@ void setup() {
 
 void draw() {
   background(0);
-  scene2.draw();
   scene1.draw();
+  scene2.draw();
+
 
 }
 
@@ -99,7 +100,7 @@ void keyPressed() {
       scene1.doDraw = 1;
   }
   if (key == '2') {
-    scene2.doDraw = 0;
+    scene1.doDraw = 0;
     scene2.initFromScene1();
     scene2.doDraw = 1;
   }  

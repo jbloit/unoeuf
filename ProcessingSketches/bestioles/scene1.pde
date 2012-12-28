@@ -27,7 +27,9 @@ class Scene1 {
   }
   public void draw() {
     if (doDraw != 0) {
+      strokeWeight(1);
       for (int i = 0; i < cells.size(); i++ ) {
+        
         Cell cell = (Cell) cells.get(i);
         cell.update();
         cell.render();
