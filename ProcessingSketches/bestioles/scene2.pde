@@ -4,17 +4,25 @@ class Scene2 {
   ArrayList predators;
   ArrayList objs;
   int doDraw;
-
  
   Scene2(PApplet _parent) {
     parent = _parent;
-    doDraw = 1;
-    if (doDraw != 0) {
+
       initAgents();
       initobjs();
-    }
+
   }
 
+   // initialiser les predateurs avec le nb de creatures de la scene 1
+  void initFromScene1(){
+    predators = new ArrayList();
+    for (int i = 0; i < scene1.cells.size(); i++){
+      Cell c = (Cell) scene1.cells.get(i);
+      Agent predator = new Agent(c.x, c.y, 2);
+      predators.add(predator);
+    }
+  
+  }
   void initAgents() {
     // Add boids
     boids = new ArrayList();
@@ -29,7 +37,6 @@ class Scene2 {
       predators.add(predator);
     }
   }
-
   void initobjs() {
     objs = new ArrayList();
     // Add objects
@@ -40,8 +47,10 @@ class Scene2 {
   }
 
   void draw() {
+    if (doDraw != 0) {
     update();
     render();
+    }
   }
 
   void update() {
@@ -53,13 +62,17 @@ class Scene2 {
     for (int i = 0; i < predators.size(); i++) {
       Agent predator = (Agent) predators.get(i);
       predator.run(boids, predators, objs);
+      // copy predator coords to cells coords
+      Cell c = (Cell) scene1.cells.get(i);
+      c.x = predator.pos.x;
+      c.y = predator.pos.y;
     }
     
     // updated objects
-//    for (int i = 0; i < objs.size(); i++) {
-//      Obj o = (Obj) objs.get(i);
-//      o.pos.sub(travelling);
-//    }
+    for (int i = 0; i < objs.size(); i++) {
+      Obj o = (Obj) objs.get(i);
+      o.pos.sub(travelling);
+    }
   }
 
   void render() {

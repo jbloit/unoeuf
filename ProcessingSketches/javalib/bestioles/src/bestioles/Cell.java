@@ -146,7 +146,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
  }
  
  public void update(){
-   
+   orientation += vr;
    // physics
    this.vx -= this.ax;
    this.vy -= this.ay;
@@ -177,9 +177,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
    else { return true;}
  }
  
-  public void draw(){
-    orientation += vr;
-    update();
+  public void render(){
     parent.pushMatrix();
     parent.translate(this.x, this.y);
     parent.rotate(this.orientation);
@@ -206,7 +204,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
         break;      
     }
         
-    // draw center
+    // render center
     parent.ellipse(0,0,10,10);
 
     parent.popMatrix();
@@ -214,7 +212,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
  
  // ------------------------------- potatoe shape
  void drawPotatoid(){
-    // draw body
+    // render body
     float curAngle = 0;
     float rotAngle = 2*parent.PI/bodyNodes;
     PVector[] nodes = new PVector[bodyNodes];
@@ -232,7 +230,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
       parent.stroke(bodyPalette[3]);
       parent.fill(bodyPalette[0], 200);}
     
-    // draw membrane
+    // render membrane
     parent.beginShape();
     int curveIndex = 0;
     for (int i=0; i < bodyNodes + 3 ; i++){
@@ -241,7 +239,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
     }
     parent.endShape(parent.CLOSE);
     
-    // draw nucleus
+    // render nucleus
     parent.fill(bodyPalette[2], 140);
     parent.beginShape();
     for (int i=0; i < bodyNodes + 3 ; i++){
@@ -254,7 +252,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
  }
  // ------------------------------- diaphragm
  void drawTriangleRing(){
-    // draw body
+    // render body
     float curAngle = 0;
     float rotAngle = 2*parent.PI/bodyNodes;
     PVector[] nodes = new PVector[bodyNodes];
@@ -272,7 +270,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
       parent.stroke(255,0,0);
       parent.fill(255, 200);}
     
-    // draw membrane
+    // render membrane
     parent.beginShape(parent.TRIANGLE_STRIP);
     int curveIndex = 0;
     for (int i=0; i < bodyNodes + 3 ; i++){
@@ -296,7 +294,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
  
 // ------------------------------- clam 
   void drawClam(){
-    // draw body
+    // render body
     float curAngle = 0;
     
     PVector[] nodes = new PVector[4];
@@ -317,7 +315,7 @@ public Cell(PApplet _parent, int _x, int _y, int _numLegs, int _kickPeriod) {
      parent.stroke(255,0,0);
      parent.fill(255, 200);}
     
-    // draw membrane
+    // render membrane
     parent.fill(bodyPalette[0],200);
     parent.beginShape();
     int curveIndex = 0;

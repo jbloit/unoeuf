@@ -3,7 +3,6 @@
 void newCell_size(int s) {
   if (scene1 != null) {
     if (scene1.newCell != null) {
-      println("size " + s );
       scene1.newCell.cellSize = s;
     }
   }
@@ -21,7 +20,7 @@ class Scene1 {
 
   public Scene1(PApplet _parent) {
     parent = _parent;
-    doDraw = 1;
+    doDraw = 0;
 
     cells = new ArrayList();
     //controlGUIinit();
@@ -30,7 +29,8 @@ class Scene1 {
     if (doDraw != 0) {
       for (int i = 0; i < cells.size(); i++ ) {
         Cell cell = (Cell) cells.get(i);
-        cell.draw();
+        cell.update();
+        cell.render();
       }
       for (int i = cells.size() - 1; i >= 0; i-- ) {
         Cell cell = (Cell) cells.get(i);
