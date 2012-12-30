@@ -145,4 +145,39 @@ class Scene2 {
       text("Objects: " + (scene2.objs.size()), 15, 65);
     }
   }
+  
+  // ---------------------------------------------- OSC callbacks
+  public void osc(String[] adressParts, OscMessage message) {
+    //    println("---- Message to OSC SCENE 2");
+    if (adressParts[2] != null) {
+      String subAdress = adressParts[2].replaceAll("\\W", "");
+      //      println("-- " + subAdress);
+      // -----------------------
+      if (subAdress.equals("draw")) {
+        
+        int val = message.get(0).intValue();
+        println("------- from draw " + val);
+        if (val == 1){
+          this.initFromScene1();
+          this.doDraw = 1;
+        } else {
+          this.doDraw = 0;
+        }
+        
+      }
+      // -----------------------
+      if (subAdress.equals("travelling")) {
+        println("---- scene2/travelling : " + message.get(0).intValue());
+        travelling.x = message.get(0).intValue();
+      }
+      // -----------------------
+      if (subAdress.equals("object")) {
+        Obj obj = new Obj(width, random(1, height), random(50, 100), round(random(1, 2)));
+        this.objs.add(obj);
+      }
+      
+    }
+  }
+
+  
 }

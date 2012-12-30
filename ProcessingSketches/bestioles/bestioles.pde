@@ -50,8 +50,6 @@ void draw() {
   background(0);
   scene1.draw();
   scene2.draw();
-
-
 }
 
 // parse incoming osc
@@ -64,6 +62,7 @@ void oscEvent(OscMessage theOscMessage) {
   }
   if (adressParts[1] != null) {
     if (adressParts[1].equals("scene1"))  scene1.osc(adressParts, theOscMessage);
+    if (adressParts[1].equals("scene2"))  scene2.osc(adressParts, theOscMessage);
   }
 }
 

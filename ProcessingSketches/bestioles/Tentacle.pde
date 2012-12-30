@@ -1,7 +1,7 @@
 // The Tentacle class
 class Tentacle {
 
-  int numNodes = (int) random(5,15);        // total number of nodes
+  int numNodes = (int) random(2,8);        // total number of nodes
   PVector[] nodes = new PVector[numNodes];
   float x, y;               // current location
 

@@ -363,27 +363,27 @@ class Agent {
   
   void render() {   
     if (type == 1) {
-      fill(156, 206, 255);
-      stroke(16, 16, 222);
-      ellipse(pos.x, pos.y, mass, mass);
-      PVector dir = vel.get();
-      dir.normalize();
-      line(pos.x, pos.y, pos.x + dir.x*10, pos.y + dir.y*10);
+//      fill(156, 206, 255);
+//      stroke(16, 16, 222);
+//      ellipse(pos.x, pos.y, mass, mass);
+//      PVector dir = vel.get();
+//      dir.normalize();
+//      line(pos.x, pos.y, pos.x + dir.x*10, pos.y + dir.y*10);
     }
     else if (type == 2) {
-      // Draw a triangle rotated in the direction of velocity        
-      float theta = vel.heading2D() + radians(90);
-      pushMatrix();
-      translate(pos.x, pos.y);
-      rotate(theta);
-      fill(220, 0, 0);
-      noStroke();
-      beginShape(TRIANGLES);
-      vertex(0, -mass);
-      vertex(-3, mass);
-      vertex(3, mass);
-      endShape();
-      popMatrix();
+//      // Draw a triangle rotated in the direction of velocity        
+//      float theta = vel.heading2D() + radians(90);
+//      pushMatrix();
+//      translate(pos.x, pos.y);
+//      rotate(theta);
+//      fill(220, 0, 0);
+//      noStroke();
+//      beginShape(TRIANGLES);
+//      vertex(0, -mass);
+//      vertex(-3, mass);
+//      vertex(3, mass);
+//      endShape();
+//      popMatrix();
     }
     // Debug mode
     if (debug) {

@@ -1,8 +1,8 @@
 // World
-public int bNum = 30;
+public int bNum = 150;
 public int pNum = 2;
 public int oNum = 0;
-PVector  travelling = new PVector(3,0);
+PVector  travelling = new PVector(10,0);
 
 // Canvas
 public boolean info = false; // Display information
@@ -10,9 +10,9 @@ public boolean bounded = false; // Bounded within scene2
 public boolean debug = false; // Display viewing fields and more
 
 // Agent
-public float Rn = 80.0; // R neighborhood
+public float Rn = 180.0; // R neighborhood
 public float maxspeed = 5.0; // Maximum speed
-public float maxforce = 3.0; // Maximum steering force
+public float maxforce = 5.0; // Maximum steering force
 public float maxpursue = 20.0; // Maximum steering force
 public float maxevade = 10.0; // Maximum steering force
 
