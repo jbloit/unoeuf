@@ -1,7 +1,7 @@
-// The Tentacle class
+// Flagellums like creatures
 class Tentacle {
 
-  int numNodes = (int) random(2,8);        // total number of nodes
+  int numNodes = (int) random(2, 8);        // total number of nodes
   PVector[] nodes = new PVector[numNodes];
   float x, y;               // current location
 
@@ -33,7 +33,7 @@ class Tentacle {
     // directional node with orbiting handle
     // arbitrary direction
     tv += 0.5 * (random(10) - random(10)) / 10.0;
-   // theta += tv;
+    // theta += tv;
     tv *= friction;
 
 
@@ -61,16 +61,16 @@ class Tentacle {
         y -= dy * speedCoefficient;
 
         if (x < -ext) { 
-          x = width + ext; 
+          x = width + ext;
         }
         if (x > width + ext) { 
-          x = -ext; 
+          x = -ext;
         }
         if (y < -ext) { 
-          y = height + ext; 
+          y = height + ext;
         }
         if (y > height + ext) { 
-          y = -ext; 
+          y = -ext;
         }
       }
     }
@@ -91,7 +91,5 @@ class Tentacle {
     }
     popMatrix();
   }
-
 }
-
 

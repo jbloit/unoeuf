@@ -7,6 +7,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import java.util.ArrayList;
 import java.io.File;
+import toxi.processing.ToxiclibsSupport;
 /**
  *
  * @author bloit
@@ -17,11 +18,15 @@ public class Globals {
    public static ArrayList palettes = new ArrayList();
    public static Cell newCell;  // pointer on the last created cell
    public static ArrayList cellPresets = new ArrayList(); 
+   public static ToxiclibsSupport gfx;
    
+  // gfx=new ToxiclibsSupport(this);
    
    public Globals(PApplet _parent)  {
        parent = _parent;
-       // make palette
+       
+       // for drawing the Splash object using toxiclibs
+       gfx = new ToxiclibsSupport(parent);
    }
    
    

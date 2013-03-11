@@ -4,23 +4,23 @@ class Scene2 {
   ArrayList predators;
   ArrayList objs;
   ArrayList tentacles;
+  ArrayList splashes;
   int doDraw;
- 
+
   Scene2(PApplet _parent) {
     parent = _parent;
-      initAgents();
-      initobjs();
+    initAgents();
+    initobjs();
   }
 
-   // initialiser les predateurs avec le nb de creatures de la scene 1
-  void initFromScene1(){
+  // initialiser les predateurs avec le nb de creatures de la scene 1
+  void initFromScene1() {
     predators = new ArrayList();
-    for (int i = 0; i < scene1.cells.size(); i++){
+    for (int i = 0; i < scene1.cells.size(); i++) {
       Cell c = (Cell) scene1.cells.get(i);
       Agent predator = new Agent(c.x, c.y, 2);
       predators.add(predator);
     }
-  
   }
   void initAgents() {
     // add tentacles
@@ -29,8 +29,6 @@ class Scene2 {
       Tentacle t = new Tentacle(random(width), random(height), 1);
       tentacles.add(t);
     }
-    
-    
     // Add boids
     boids = new ArrayList();
     for (int i = 0; i < bNum; i++) {
@@ -51,17 +49,30 @@ class Scene2 {
   }
   void initobjs() {
     objs = new ArrayList();
+    splashes = new ArrayList();
     // Add objects
     for (int i = 0; i < oNum; i++) {
-      Obj obj = new Obj(random(1, width), random(1, height), random(50, 100), round(random(1, 2)));
+      Obj obj = new Obj(random(1, width), random(1, height), random(50, 100));
       objs.add(obj);
     }
   }
 
   void draw() {
     if (doDraw != 0) {
-    update();
-    render();
+      update();
+      render();
+    }
+  }
+
+  void cleanSplashes() {
+    // update obstacle objects
+    for (int i = splashes.size() - 1; i >= 0; i-- ) {
+      Splash s = (Splash) splashes.get(i);
+      //println("splash n on screen : " + i + " " + s.isOnScreen());
+      if (!s.isOnScreen()) {
+        //splashes.remove(i);
+        println("-----------------removing splash n: " + i);
+      }
     }
   }
 
@@ -70,71 +81,55 @@ class Scene2 {
     for (int i = 0; i < boids.size(); i++) {
       Agent boid = (Agent) boids.get(i);
       boid.run(boids, predators, objs);
-      
+
+      // attach Tentacle to Boid's body
       Tentacle t = (Tentacle) tentacles.get(i);
       t.x = boid.pos.x;
       t.y = boid.pos.y;
       PVector xDirection = new PVector(1, 0);
       PVector boidDirection = boid.vel.get();
-      t.theta = degrees(PVector.angleBetween(boidDirection,xDirection));
-
+      t.theta = degrees(PVector.angleBetween(boidDirection, xDirection));
       t.update();
-
-      
     }
     for (int i = 0; i < predators.size(); i++) {
       Agent predator = (Agent) predators.get(i);
       predator.run(boids, predators, objs);
-      // copy predator coords to cells coords
-      
+      // Attach Cell to Predator's body
       Cell c = (Cell) scene1.cells.get(i);
       c.update();
       c.x = predator.pos.x;
       c.y = predator.pos.y;
     }
-    
-    // updated objects
-    for (int i = 0; i < objs.size(); i++) {
+
+    // update obstacle objects
+    for (int i = 0; i < splashes.size(); i++) {
       Obj o = (Obj) objs.get(i);
       o.pos.sub(travelling);
+      // attach splash 
+      Splash s = (Splash) splashes.get(i);
+      s.x = (int) o.pos.x;
+      s.y = (int) o.pos.y;
+      s.update();
     }
   }
 
   void render() {
-    
     // render predators
     for (int i = 0; i < predators.size(); i++) {
       // copy predator coords to cells coords
       Cell c = (Cell) scene1.cells.get(i);
       c.render();
     }
-    
+
     // render tentacles
     for (int i = 0; i < tentacles.size(); i++) {
       Tentacle t = (Tentacle) tentacles.get(i);
       t.render();
     }
-    // Render objects
-    for (int i = 0; i < objs.size(); i++) {
-      Obj obj = (Obj) objs.get(i);
-
-      if (obj.type == 1) {
-        fill(200, 180, 160);
-        stroke(50, 30, 20);
-        ellipse(obj.pos.x, obj.pos.y, obj.mass, obj.mass);
-      }
-      else if (obj.type == 2) {
-        fill(120, 190, 150);
-        stroke(80, 70, 40);
-        ellipse(obj.pos.x, obj.pos.y, obj.mass, obj.mass);
-      }
-      // Debug mode
-      if (debug) {
-        // Neighborhood radius
-        fill(100, 100, 100, 30);
-        noStroke();
-        ellipse(obj.pos.x, obj.pos.y, obj.mass + ORadius*2, obj.mass + ORadius*2);
-      }
+    // Render splash objects
+    for (int i = 0; i < splashes.size(); i++) {
+      Splash s = (Splash) splashes.get(i);
+      s.render();
     }
     // Render info
     if (info) {
@@ -144,8 +139,11 @@ class Scene2 {
       text("Predators: " + (scene2.predators.size()), 15, 50);
       text("Objects: " + (scene2.objs.size()), 15, 65);
     }
+    
+
+    
   }
-  
+
   // ---------------------------------------------- OSC callbacks
   public void osc(String[] adressParts, OscMessage message) {
     //    println("---- Message to OSC SCENE 2");
@@ -154,16 +152,16 @@ class Scene2 {
       //      println("-- " + subAdress);
       // -----------------------
       if (subAdress.equals("draw")) {
-        
+
         int val = message.get(0).intValue();
         println("------- from draw " + val);
-        if (val == 1){
+        if (val == 1) {
           this.initFromScene1();
           this.doDraw = 1;
-        } else {
+        } 
+        else {
           this.doDraw = 0;
         }
-        
       }
       // -----------------------
       if (subAdress.equals("travelling")) {
@@ -172,12 +170,29 @@ class Scene2 {
       }
       // -----------------------
       if (subAdress.equals("object")) {
-        Obj obj = new Obj(width, random(1, height), random(50, 100), round(random(1, 2)));
+        
+        cleanSplashes();
+        
+        int x = width;
+        int y = (int) random(1, height);
+        float mass = random(20, 50);
+        if ((message.get(0).floatValue() != 0)) {
+          y = (int) (message.get(0).floatValue() * height) ;
+        }
+        if (message.get(1).floatValue() != 0) {
+          mass = message.get(1).floatValue() * 100;
+        }
+
+        // create obstacle body
+        Obj obj = new Obj(x, y, mass);
         this.objs.add(obj);
+
+        // create obstacle Splash shape to attach to the obstacle body coords
+        Splash splash = new Splash(this.parent, x, y, mass);
+        this.splashes.add(splash);
+        println("++++++++++++++++ add new splash. N = " + splashes.size());
       }
-      
     }
   }
-
-  
 }
+

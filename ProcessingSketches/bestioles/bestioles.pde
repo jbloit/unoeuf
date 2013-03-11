@@ -90,7 +90,7 @@ void keyPressed() {
     
       // add an object
   if (key == 'o') {
-    Obj obj = new Obj(width, random(1, height), random(50, 100), round(random(1, 2)));
+    Obj obj = new Obj(width, random(1, height), random(50, 100));
      scene2.objs.add(obj);
     redraw();
   }
