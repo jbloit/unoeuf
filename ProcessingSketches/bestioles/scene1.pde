@@ -15,7 +15,9 @@ class Scene1 {
   PApplet parent;
   int doDraw;
 
-  public Cell newCell; // 
+  boolean isSceneEmpty = true;
+
+  public Cell newCell; // the most recently created cell
   public ArrayList cells;
 
   public Scene1(PApplet _parent) {
@@ -29,7 +31,7 @@ class Scene1 {
     if (doDraw != 0) {
       strokeWeight(1);
       for (int i = 0; i < cells.size(); i++ ) {
-        
+
         Cell cell = (Cell) cells.get(i);
         cell.update();
         cell.render();
@@ -43,6 +45,7 @@ class Scene1 {
     }
   }
 
+  // a green creature that'll stay on screen
   public void newCell() {
     newCell((int) random(0, width), (int) random(0, height));
   }
@@ -50,6 +53,7 @@ class Scene1 {
   public void newCell(int x, int y) {
     newCell = new Cell(parent, x, y, 1, (int) random(10, 50));
     newCell.autoKick = false;
+    newCell.stayOnScreen = true;
     cells.add(newCell);
     globals.newCell = newCell;
   }
@@ -73,26 +77,32 @@ class Scene1 {
     if (newCell != null) {
       newCell_release();
     }
-    newCell = new Cell(parent, (int) random(0, width), (int) random(0, height), (int) random(1, 5), (int) random(1, 50));
-    newCell.autoKick = false;
-    newCell.cellSize = (int) random(10, 20);
-    int legShape =  floor(random (0, 7));
+    // Make sure the first creature is a green one.
+    if (isSceneEmpty) {
+      newCell();
+      isSceneEmpty = false;
+    } 
+    else {
+      newCell = new Cell(parent, (int) random(0, width), (int) random(0, height), (int) random(1, 5), (int) random(1, 50));
+      newCell.autoKick = false;
+      newCell.cellSize = (int) random(10, 20);
+      int legShape =  floor(random (0, 7));
 
-    newCell.mutate = random(-2, 2);
-    newCell.bodyNodes = (int) random(3, 20);
-    newCell.damping = random(0.3, 0.8);
-    newCell.bodyShape = (int) floor(random(0, 3));
-    int paletteIndex = (int) random(0, (globals.palettes.size()-1));
-    newCell.setPalette(paletteIndex);
-    for (int i = 0; i < newCell.numLegs; i++) {
-      Leg leg = (Leg) newCell.bodyLegs.get(i);
-      leg.numberOfSegments = (int) random(3, 10);
-      leg.legShape = legShape;
-      leg.setPalette(paletteIndex);
+      newCell.mutate = random(-2, 2);
+      newCell.bodyNodes = (int) random(3, 20);
+      newCell.damping = random(0.3, 0.8);
+      newCell.bodyShape = (int) floor(random(0, 3));
+      int paletteIndex = (int) random(0, (globals.palettes.size()-1));
+      newCell.setPalette(paletteIndex);
+      for (int i = 0; i < newCell.numLegs; i++) {
+        Leg leg = (Leg) newCell.bodyLegs.get(i);
+        leg.numberOfSegments = (int) random(3, 10);
+        leg.legShape = legShape;
+        leg.setPalette(paletteIndex);
+      }
+      newCell.bodyLegProportion = random(1.7, 5);
+      cells.add(newCell);
     }
-    newCell.bodyLegProportion = random(1.7, 5);
-
-    cells.add(newCell);
   }
 
   void newCell_damping(float d) {
@@ -106,6 +116,7 @@ class Scene1 {
     for (int i = cells.size() - 1; i >= 0; i-- ) {
       cells.remove(i);
     }
+    isSceneEmpty = true;
     doDraw = prevDrawVal;
   }
   void newCell_kickPeriod(int kp) {
@@ -120,8 +131,9 @@ class Scene1 {
     }
   }
 
+  // leave the first creature behind while dispersing the others
   void leaveOneBehind() {
-    int leftBehindCell = (int) random(cells.size()-1);
+    int leftBehindCell = 0;
     for (int i = 0; i < cells.size(); i++ ) {
       Cell curCell = (Cell) cells.get(i);
       //      float damp = curCell.damping;

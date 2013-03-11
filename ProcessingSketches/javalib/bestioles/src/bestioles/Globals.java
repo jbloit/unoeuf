@@ -15,7 +15,7 @@ public class Globals {
    public PApplet parent;
    public static int a=33;
    public static ArrayList palettes = new ArrayList();
-   public static Cell newCell;                          // pointer on the last created cell
+   public static Cell newCell;  // pointer on the last created cell
    public static ArrayList cellPresets = new ArrayList(); 
    
    
@@ -63,7 +63,7 @@ public void loadCellPresets(){
   
   int numPresets = 3; // simulate for now
   
-  parent.println("acces au paprent");
+  parent.println("acces au parent");
   
   for (int i = 0; i < numPresets; i++){
       parent.println("boucle");
